@@ -121,12 +121,6 @@ bot.onText(/^\/cancelar/, function(msg){
 
 });
 
-const miliseg = () => {
-    const miliseg = 3600000
-    const hora =  Control.control.horas_ayuno
-    return hora * miliseg
-}
-
 // ? LOGICA DE LA APP
 setInterval(function(){
     if(chatID != null && global.esta_ayunando == true){
@@ -141,7 +135,7 @@ setInterval(function(){
                 break;
         }
     }
-}, 5000 );
+}, 3600000);
 
 
 
