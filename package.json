@@ -1,0 +1,19 @@
+{
+  "name": "bot_nodejs",
+  "version": "1.0.0",
+  "description": "bot de telegram para informar sobre tiempos de ayuno intermitente",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "telegram",
+    "bot"
+  ],
+  "author": "daniel hernandez <daniher02@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0"
+  }
+}
