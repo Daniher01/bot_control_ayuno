@@ -18,8 +18,6 @@ bot.on('polling_error', function(error){
 bot.onText(/^\/start/, function(msg){
     var chatId = msg.chat.id;
     var nameUser = msg.from.first_name;
-
-    jeje();
     
     bot.sendMessage(chatId, "Hola " + nameUser);
 });
