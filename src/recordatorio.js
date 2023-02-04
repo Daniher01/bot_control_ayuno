@@ -1,5 +1,5 @@
-function jeje (){
-    console.log('asdasd');
+function jeje(){
+    console.log('adasd');
 }
 
-export default jeje;
+module.exports = {jeje};

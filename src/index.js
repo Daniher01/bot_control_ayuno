@@ -1,5 +1,6 @@
 // Importamos la librería node-telegram-bot-api
 const TelegramBot = require('node-telegram-bot-api');
+const jejes = require('./recordatorio');
 
 // Creamos una constante que guarda el Token de nuestro Bot de Telegram que previamente hemos creado desde el bot @BotFather
 const token = '6089035688:AAHY_FQnZRS90HdVSjpr_Q4tRIzWCAsWgSg';
@@ -18,6 +19,8 @@ bot.on('polling_error', function(error){
 bot.onText(/^\/start/, function(msg){
     var chatId = msg.chat.id;
     var nameUser = msg.from.first_name;
+
+    jejes.jeje();
     
     bot.sendMessage(chatId, "Hola " + nameUser);
 });
