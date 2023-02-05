@@ -28,9 +28,9 @@ const status = () =>{
     Rango de horas de ayuno: ${control.horas_ayuno}
     Rango de horas para comer: ${control.horas_comida()}
 
-    Actualmente estas en modo: ${control.estado_control}
+    Actualmente estas en modo: *${control.estado_control}*
 
-    Si deseas cancelar tu ayuno o camibiar de horas, escribe "/cancelar"
+    Si deseas cancelar tu rutina o cambiar de horas, escribe "/cancelar"
     `;
 }
 

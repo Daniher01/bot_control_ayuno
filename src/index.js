@@ -26,6 +26,7 @@ bot.on('polling_error', function(error){
 // ? capta un mensaje
 bot.addListener('message', function(msg){
     chatID = msg.chat.id;
+    Control.control.nombre = msg.from.first_name
 });
 
 // ? comando para iniciar el bot
@@ -34,18 +35,17 @@ bot.onText(/^\/start/, function(msg){
     var nameUser = msg.from.first_name;
     
     console.log('comando start');
-    
-    bot.sendMessage(chatId, "Hola " + nameUser);
-    
-    setTimeout(function(){
-        bot.sendMessage(chatId, Menu.showMenu());
-    }, 500);
 
     if(global.esta_ayunando == false){
         global.puede_elegir = true
+
+        bot.sendMessage(chatId, "Hola " + nameUser);
+    
+        setTimeout(function(){
+            bot.sendMessage(chatId, Menu.showMenu());
+        }, 500);
     }else{
-        bot.sendMessage(chatId, `Actualmente estas con una rutina de ayuno intermitente activa,
-        ve al comanto de "status para tener mas informacion"`);
+        bot.sendMessage(chatId, `Actualmente estas con una rutina de ayuno intermitente activa, ve al comando de */status* para tener mas informacion`,{parse_mode : "Markdown"});
     }
     
     
@@ -60,24 +60,17 @@ bot.onText(/^\/descripcion/, function(msg){
     
     bot.sendMessage(chatId, 
         `
-    Este asistente virtual para tus ayunos intermitentes
-    su principal funcion es ayudar a recordarte cuando estas
-    dentro de tus rangos de horas para poder comer y cuando
-    estas dentro de tus rangos para para hacer el ayuno.
+    Este _asistente virtual_ para tus *ayunos intermitentes* su principal funcion es ayudar a recordarte cuando estas dentro de tus rangos de horas para poder comer y cuando estas dentro de tus rangos para para hacer el ayuno.
     
-    Si por ejemplo utilizas un ayuno 16/8 (16 horas de ayuno y 8 para comer)
-    te dará 2 alertas, la primera cuando entres en el rango de ayuno,
-    y la segunda cuando entres al rango para poder comer
+    Si por ejemplo utilizas un ayuno 16/8 _(16 horas de ayuno y 8 para comer)_ te dará 2 alertas, la primera cuando entres en el rango de ayuno, y la segunda cuando entres al rango para poder comer
 
-    ¿Como usar?
+    *¿Como usar?*
 
-    ingresar el rango de horas de ayuno. Ejemplo: 16 
-    para hacer referencia a 16 horas de ayuno y por ende 8 horas para comer 
-    (sumando asi las 24 horas del dia)
+    Ingresa la opcion que necesitas en el *Menu* y se te indicará cuantas horas vas a estar en ayuno y cuantas horas serán para poder comer
 
-    Este bot comienza desde el momento que lo activas con el comando "start"
+    Este bot comienza desde el momento que lo activas con el comando *start* y siempre comenzarás en modo de _ayuno_
         `
-        );
+        ,{parse_mode : "Markdown"});
 });
 
 
@@ -87,20 +80,22 @@ bot.onText(/^[0-9]$/, function(msg){
     var nameUser = msg.from.first_name;
 
     if(global.puede_elegir == true){
-        let mensaje = Menu.elegirOpcion(msg.text, nameUser)
-        bot.sendMessage(chatId, mensaje);
+        if(global.esta_ayunando == false){
+            let mensaje = Menu.elegirOpcion(msg.text, nameUser)
+            bot.sendMessage(chatId, mensaje);
+        }else{
+            bot.sendMessage(chatId, `Actualmente estas con una rutina de ayuno intermitente activa, ve al comanto de */status* para tener mas informacion`,{parse_mode : "Markdown"});
+        }
     }else{
-        bot.sendMessage(chatId, 'Primero ejecute el comando "/start"');
+        bot.sendMessage(chatId, 'Primero ejecute el comando */start*',{parse_mode : "Markdown"});
     }
 });
 
 bot.onText(/^\/status/, function(msg){
     var chatId = msg.chat.id;
     var nameUser = msg.from.first_name;
-
-    console.log('comando start');
     
-    bot.sendMessage(chatId, Control.status());
+    bot.sendMessage(chatId, Control.status(),{parse_mode : "Markdown"});
 
 });
 
@@ -108,45 +103,42 @@ bot.onText(/^\/cancelar/, function(msg){
     var chatId = msg.chat.id;
     var nameUser = msg.from.first_name;
 
-    console.log('entra a cerrar ');
-
-    console.log('comando start');
     if(global.esta_ayunando == true){
         //lo cancela
         Control.cancelar();
-        bot.sendMessage(chatId, 'Cancelaste tu control de ayuno intermitente');
+        global.esta_ayunando = false
+        bot.sendMessage(chatId, '*Cancelaste tu control de ayuno intermitente*',{parse_mode : "Markdown"});
     }else{
-        bot.sendMessage(chatId, 'Actualmente no estas llevando control de tu ayuno intermitente');
+        bot.sendMessage(chatId, '*Actualmente no estas llevando control de tu ayuno intermitente*',{parse_mode : "Markdown"});
     }
 
 });
 
-let contador = 0
+let contador = 25 // un numero grande par asegurar que sea mayor a la hora de ayuno
 // ? LOGICA DE LA APP
 setInterval(function(){
     if(chatID != null && global.esta_ayunando == true){
         switch (Control.control.estado_control){
             case "Ayuno":
-                bot.sendMessage(chatID, `Estas modo ${Control.control.estado_control}, te quedan ${Control.control.horas_ayuno - contador} Horas de ayuno`);
+                //bot.sendMessage(chatID, `Estas modo *${Control.control.estado_control}*, te quedan _${Control.control.horas_ayuno - contador}_ Horas de ayuno`,{parse_mode : "Markdown"});
                 contador++
                 if(contador >= Control.control.horas_ayuno){
                     Control.control.estado_control = "Comida"
                     contador = 0
-                    bot.sendMessage(chatID, `Ya puedes romper el ayuno`);
+                    bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
                 }
                 
                 break;
             case "Comida":
-                bot.sendMessage(chatID, `Estas modo ${Control.control.estado_control}, te quedan ${Control.control.horas_comida() - contador} Horas para poder comer`);
+                //bot.sendMessage(chatID, `Estas modo *${Control.control.estado_control}*, te quedan _${Control.control.horas_comida() - contador}_ Horas para poder comer`,{parse_mode : "Markdown"});
                 contador++
                 if(contador >= Control.control.horas_ayuno){
                     Control.control.estado_control = "Ayuno"
                     contador = 0
-                    bot.sendMessage(chatID, `Entrase en ayuno`);
+                    bot.sendMessage(chatID, `*Entrase en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
                 break;
         }
-        console.log(contador);
     }
 }, 1000);
 
