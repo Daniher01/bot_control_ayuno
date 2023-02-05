@@ -121,21 +121,32 @@ bot.onText(/^\/cancelar/, function(msg){
 
 });
 
+let contador = 0
 // ? LOGICA DE LA APP
 setInterval(function(){
     if(chatID != null && global.esta_ayunando == true){
         switch (Control.control.estado_control){
             case "Ayunando":
                 bot.sendMessage(chatID, `Estabas modo ${Control.control.estado_control} Ya puedes romper el ayuno, tienes ${Control.control.horas_comida()} Horas para comer`);
-                Control.control.estado_control = "Comiendo"
+                contador++
+                if(contador >= Control.control.horas_ayuno){
+                    Control.control.estado_control = "Comiendo"
+                    contador = 0
+                }
+                
                 break;
             case "Comiendo":
                 bot.sendMessage(chatID, `Estabas modo ${Control.control.estado_control} Ya empezó el ayuno de ${Control.control.horas_ayuno} Horas`);
-                Control.control.estado_control = "Ayunando"
+                contador++
+                if(contador >= Control.control.horas_ayuno){
+                    Control.control.estado_control = "Ayunando"
+                    contador = 0
+                }
                 break;
         }
+        console.log(contador);
     }
-}, 3600000);
+}, 1000);
 
 
 
