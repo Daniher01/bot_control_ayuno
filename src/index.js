@@ -126,20 +126,20 @@ let contador = 0
 setInterval(function(){
     if(chatID != null && global.esta_ayunando == true){
         switch (Control.control.estado_control){
-            case "Ayunando":
+            case "Ayuno":
                 bot.sendMessage(chatID, `Estabas modo ${Control.control.estado_control} Ya puedes romper el ayuno, tienes ${Control.control.horas_comida()} Horas para comer`);
                 contador++
                 if(contador >= Control.control.horas_ayuno){
-                    Control.control.estado_control = "Comiendo"
+                    Control.control.estado_control = "Comida"
                     contador = 0
                 }
                 
                 break;
-            case "Comiendo":
+            case "Comida":
                 bot.sendMessage(chatID, `Estabas modo ${Control.control.estado_control} Ya empezó el ayuno de ${Control.control.horas_ayuno} Horas`);
                 contador++
                 if(contador >= Control.control.horas_ayuno){
-                    Control.control.estado_control = "Ayunando"
+                    Control.control.estado_control = "Ayuno"
                     contador = 0
                 }
                 break;

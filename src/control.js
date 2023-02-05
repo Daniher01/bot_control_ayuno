@@ -8,7 +8,7 @@ let control = {
     horas_comida : function(){
         return 24 - control.horas_ayuno
     },
-    estado_control: "Comiendo"
+    estado_control: "Comida"
 }
 
 const activar = (horas_ayuno, usuario) => {
@@ -27,6 +27,8 @@ const status = () =>{
     Usuario : ${control.nombre}
     Rango de horas de ayuno: ${control.horas_ayuno}
     Rango de horas para comer: ${control.horas_comida()}
+
+    Actualmente estas en modo: ${control.estado_control}
 
     Si deseas cancelar tu ayuno o camibiar de horas, escribe "/cancelar"
     `;
