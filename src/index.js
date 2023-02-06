@@ -135,7 +135,7 @@ setInterval(function(){
                 if(contador >= Control.control.horas_ayuno){
                     Control.control.estado_control = "Ayuno"
                     contador = 0
-                    bot.sendMessage(chatID, `*Entrase en Ayuno* ‼️`,{parse_mode : "Markdown"});
+                    bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
                 break;
         }
