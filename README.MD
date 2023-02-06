@@ -6,7 +6,7 @@ cuando estas en las horas de ayuno y cuando en las horas permitidas para comer.
 
 ## ¿Como ejecutar el bot?
 **Instalaciones necesarias**
-- ` $ git clone https://github.com/Daniher01/bot_nodeJS.gitnpm install node`
+- ` $ git clone https://github.com/Daniher01/bot_control_ayuno.git`
 - `$ npm install node`
 - `$ npm init -y`
 
