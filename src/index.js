@@ -13,6 +13,7 @@ const bot = new TelegramBot(token, {polling: true});
 console.log('Se inicia el bot');
 global.puede_elegir = false // ? saber si puede elegir o no las opciones
 global.esta_ayunando = false // ? saber si esta con una rutina de ayuno o no
+let contador = 25 // un numero grande par asegurar que sea mayor a la hora de ayuno
 
 // ⚠️ Después de este comentario es donde ponemos la lógica de nuestro bot donde podemos crear los comandos y eventos para darle funcionalidades a nuestro bot
 
@@ -107,6 +108,7 @@ bot.onText(/^\/cancelar/, function(msg){
         //lo cancela
         Control.cancelar();
         global.esta_ayunando = false
+        contador = 0 // se reinicia el contador
         bot.sendMessage(chatId, '*Cancelaste tu control de ayuno intermitente*',{parse_mode : "Markdown"});
     }else{
         bot.sendMessage(chatId, '*Actualmente no estas llevando control de tu ayuno intermitente*',{parse_mode : "Markdown"});
@@ -114,7 +116,6 @@ bot.onText(/^\/cancelar/, function(msg){
 
 });
 
-let contador = 25 // un numero grande par asegurar que sea mayor a la hora de ayuno
 // ? LOGICA DE LA APP
 setInterval(function(){
     llevarControl();
@@ -139,7 +140,7 @@ function llevarControl(){
                 if(contador >= Control.control.horas_ayuno){
                     Control.control.estado_control = "Ayuno"
                     contador = 0
-                    bot.sendMessage(chatID, `*Entrase en Ayuno* ‼️`,{parse_mode : "Markdown"});
+                    bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
                 break;
         }
