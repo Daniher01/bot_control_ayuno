@@ -4,7 +4,7 @@ const Menu = require('./menu');
 const Control = require('./control');
 
 // Creamos una constante que guarda el Token de nuestro Bot de Telegram que previamente hemos creado desde el bot @BotFather
-const token = '6089035688:AAG9222l_wU0n9JrfFU_UEqUcPWTsiC-3qs';
+const token = require('./../config/config');
 let chatID = null;
 
 // Create a bot that uses 'polling' to fetch new updates
@@ -117,6 +117,10 @@ bot.onText(/^\/cancelar/, function(msg){
 let contador = 25 // un numero grande par asegurar que sea mayor a la hora de ayuno
 // ? LOGICA DE LA APP
 setInterval(function(){
+    llevarControl();
+}, 3600000);
+
+function llevarControl(){
     if(chatID != null && global.esta_ayunando == true){
         switch (Control.control.estado_control){
             case "Ayuno":
@@ -140,7 +144,7 @@ setInterval(function(){
                 break;
         }
     }
-}, 3600000);
+}
 
 
 

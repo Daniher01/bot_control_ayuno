@@ -8,7 +8,8 @@ let control = {
     horas_comida : function(){
         return 24 - control.horas_ayuno
     },
-    estado_control: "Comida"
+    estado_control: "Comida",
+    fecha_inicio: 0
 }
 
 const activar = (horas_ayuno, usuario) => {
