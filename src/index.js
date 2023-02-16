@@ -1,5 +1,7 @@
 // Importamos la librería node-telegram-bot-api
 const TelegramBot = require('node-telegram-bot-api');
+const moment = require('moment');
+
 const Menu = require('./menu');
 const Control = require('./control');
 
@@ -10,10 +12,10 @@ let chatID = null;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
+
 console.log('Se inicia el bot');
 global.puede_elegir = false // ? saber si puede elegir o no las opciones
 global.esta_ayunando = false // ? saber si esta con una rutina de ayuno o no
-let contador = 25 // un numero grande par asegurar que sea mayor a la hora de ayuno
 
 // ⚠️ Después de este comentario es donde ponemos la lógica de nuestro bot donde podemos crear los comandos y eventos para darle funcionalidades a nuestro bot
 
@@ -83,6 +85,9 @@ bot.onText(/^[0-9]$/, function(msg){
     if(global.puede_elegir == true){
         if(global.esta_ayunando == false){
             let mensaje = Menu.elegirOpcion(msg.text, nameUser)
+
+            Control.control.hora_inicio = moment().format("HH:mm");
+
             bot.sendMessage(chatId, mensaje);
         }else{
             bot.sendMessage(chatId, `Actualmente estas con una rutina de ayuno intermitente activa, ve al comanto de */status* para tener mas informacion`,{parse_mode : "Markdown"});
@@ -108,7 +113,6 @@ bot.onText(/^\/cancelar/, function(msg){
         //lo cancela
         Control.cancelar();
         global.esta_ayunando = false
-        contador = 0 // se reinicia el contador
         bot.sendMessage(chatId, '*Cancelaste tu control de ayuno intermitente*',{parse_mode : "Markdown"});
     }else{
         bot.sendMessage(chatId, '*Actualmente no estas llevando control de tu ayuno intermitente*',{parse_mode : "Markdown"});
@@ -119,27 +123,31 @@ bot.onText(/^\/cancelar/, function(msg){
 // ? LOGICA DE LA APP
 setInterval(function(){
     llevarControl();
-}, 3600000);
+}, 5000);
 
 function llevarControl(){
+    let hora_inicio = Control.control.horas_comida(); // primera vez que se inicia el bot
     if(chatID != null && global.esta_ayunando == true){
+        hora_inicio = Control.control.hora_inicio;
+        
+        console.log(hora_inicio);
+        console.log(Control.control.horas_ayuno);
+        console.log(Control.control.horas_comida());
+       
         switch (Control.control.estado_control){
             case "Ayuno":
-                //bot.sendMessage(chatID, `Estas modo *${Control.control.estado_control}*, te quedan _${Control.control.horas_ayuno - contador}_ Horas de ayuno`,{parse_mode : "Markdown"});
-                contador++
-                if(contador >= Control.control.horas_ayuno){
+                if(moment(hora_inicio, 'h').startOf('hour').fromNow() >= 
+                    moment(Control.control.horas_ayuno, 'h').startOf('hour').fromNow()){
+
                     Control.control.estado_control = "Comida"
-                    contador = 0
                     bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
-                }
+                } 
                 
                 break;
             case "Comida":
-                //bot.sendMessage(chatID, `Estas modo *${Control.control.estado_control}*, te quedan _${Control.control.horas_comida() - contador}_ Horas para poder comer`,{parse_mode : "Markdown"});
-                contador++
-                if(contador >= Control.control.horas_ayuno){
+                if(moment(hora_inicio, 'h').startOf('hour').fromNow() >= 
+                        moment(Control.control.horas_comida(), 'h').startOf('hour').fromNow()){
                     Control.control.estado_control = "Ayuno"
-                    contador = 0
                     bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
                 break;

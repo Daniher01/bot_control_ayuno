@@ -1,6 +1,7 @@
 /*
 * aqui va a estar la logica para llevar el control del ayuno intermitente
 */
+const moment = require('moment');
 
 let control = {
     nombre : '',
@@ -9,12 +10,12 @@ let control = {
         return 24 - control.horas_ayuno
     },
     estado_control: "Comida",
-    fecha_inicio: 0
+    hora_inicio: 0
 }
 
 const activar = (horas_ayuno, usuario) => {
     control.nombre = usuario;
-    control.horas_ayuno = horas_ayuno;
+    control.horas_ayuno = moment().add(horas_ayuno,'h').format('HH:mm');
 }
 
 const cancelar = () => {
@@ -23,7 +24,6 @@ const cancelar = () => {
 }
 
 const status = () =>{
-
     return `
     Usuario : ${control.nombre}
     Rango de horas de ayuno: ${control.horas_ayuno}
