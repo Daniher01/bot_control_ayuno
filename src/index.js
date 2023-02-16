@@ -86,7 +86,7 @@ bot.onText(/^[0-9]$/, function(msg){
         if(global.esta_ayunando == false){
             let mensaje = Menu.elegirOpcion(msg.text, nameUser)
 
-            Control.control.hora_inicio = moment().format("HH:mm");
+            llevarControl()
 
             bot.sendMessage(chatId, mensaje);
         }else{
@@ -123,15 +123,15 @@ bot.onText(/^\/cancelar/, function(msg){
 // ? LOGICA DE LA APP
 setInterval(function(){
     llevarControl();
-}, 5000);
+}, 60000);
 
 function llevarControl(){
+    console.log('function::llevarControl');
     if(chatID != null && global.esta_ayunando == true){
         let hora_inicio = Control.control.hora_inicio;
-               
         switch (Control.control.estado_control){
             case "Ayuno":
-                if(moment(hora_inicio,'HH:mm ').isSameOrAfter(moment(Control.control.horas_ayuno, 'HH:mm'))){
+                if(moment(hora_inicio,'HH:mm ').isSame(moment(Control.control.horas_ayuno, 'HH:mm'))){
 
                     Control.control.estado_control = "Comida"
                     bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
@@ -139,7 +139,7 @@ function llevarControl(){
                 
                 break;
             case "Comida":
-                if(moment(hora_inicio, 'HH:mm ').isSameOrAfter(moment(Control.control.horas_comida, 'HH:mm'))){
+                if(moment(hora_inicio, 'HH:mm ').isSame(moment(Control.control.horas_comida, 'HH:mm'))){
                     Control.control.estado_control = "Ayuno"
                     bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }

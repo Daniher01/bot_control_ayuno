@@ -58,12 +58,6 @@ const elegirOpcion = (opcion, usuario) =>{
            msg = mensaje(horas[parseInt(opcion)].ayuno)
            Control.activar(horas[parseInt(opcion)].ayuno,horas[parseInt(opcion)].comida, usuario)
            global.esta_ayunando = true
-           break
-            horas : {
-                ayuno: '12';
-                comida: '12';
-              }
-            // funcion             
             break
         case '0':
             msg = `No elegiste ninguna opcion, para poder elegir otra opcion, ejecute el comando "/start"`     

@@ -13,20 +13,26 @@ let control = {
 
 const activar = (horas_ayuno, horas_comida, usuario) => {
     control.nombre = usuario;
+    control.hora_inicio = moment().format("HH:mm");
     control.horas_ayuno = moment().add(horas_ayuno,'h').format('HH:mm');
-    control.horas_comida = moment(horas_ayuno, 'hhmm').add(horas_comida,'h').format('HH:mm');
+    control.horas_comida = moment().format('HH:mm');
 }
 
 const cancelar = () => {
     control.nombre = ''
     control.horas_ayuno = 0
+    control.estado_control = "Comida"
 }
 
 const status = () =>{
+    let msg = control.estado_control == 'Ayuno' ? `El ayuno es hasta las ${control.horas_ayuno} `: `La hora de comida es hasta las ${control.horas_comida}`
+
     return `
     Usuario : ${control.nombre}
-    Rango de horas de ayuno: ${control.horas_ayuno}
-    Rango de horas para comer: ${control.horas_comida()}
+
+    Comenzaste tu ayuno a las ${control.hora_inicio}
+
+    ${msg}
 
     Actualmente estas en modo: *${control.estado_control}*
 
