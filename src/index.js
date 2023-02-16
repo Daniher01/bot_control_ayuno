@@ -129,10 +129,6 @@ function llevarControl(){
     if(chatID != null && global.esta_ayunando == true){
         let hora_inicio = Control.control.hora_inicio;
         
-        console.log(hora_inicio);
-        console.log(Control.control.horas_ayuno);
-        console.log(Control.control.horas_comida);
-
         console.log(moment(hora_inicio, 'HH:mm ').isSameOrAfter(moment(Control.control.horas_comida, 'HH:mm')));
        
         switch (Control.control.estado_control){
