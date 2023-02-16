@@ -19,7 +19,7 @@ const token = '6089035688:AAG9222l_wU0n9JrfFU_UEqUcPWTsiC-3qs';
 - Cambiar *token* por el token id de su bot de telegram
 
 **Para poder ejecutar**
-`$ npm start`
+`$ npm run start`
 
 ### Proyecto referencia:
 `<link>` : <https://tecnonucleous.com/creacion-de-bots-de-telegram-en-nodejs/#primerospasos>
