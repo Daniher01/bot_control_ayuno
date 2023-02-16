@@ -46,17 +46,17 @@ const elegirOpcion = (opcion, usuario) =>{
     switch (opcion){
         case '1':
            msg = mensaje(horas[parseInt(opcion)].ayuno)
-           Control.activar(horas[parseInt(opcion)].ayuno, usuario)
+           Control.activar(horas[parseInt(opcion)].ayuno,horas[parseInt(opcion)].comida, usuario)
            global.esta_ayunando = true
            break
         case '2':
            msg =  mensaje(horas[parseInt(opcion)].ayuno)
-           Control.activar(horas[parseInt(opcion)].ayuno, usuario)
+           Control.activar(horas[parseInt(opcion)].ayuno,horas[parseInt(opcion)].comida, usuario)
            global.esta_ayunando = true
            break
         case '3': 
            msg = mensaje(horas[parseInt(opcion)].ayuno)
-           Control.activar(horas[parseInt(opcion)].ayuno, usuario)
+           Control.activar(horas[parseInt(opcion)].ayuno,horas[parseInt(opcion)].comida, usuario)
            global.esta_ayunando = true
            break
             horas : {
