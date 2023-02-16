@@ -4,7 +4,7 @@
   "description": "bot de telegram para informar sobre tiempos de ayuno intermitente",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "pm2 start src/index.js",
     "dev": "nodemon start src/index.js"
   },
   "keywords": [
@@ -16,7 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.29.4",
-    "node-telegram-bot-api": "^0.61.0",
-    "relative-time-parser": "^1.0.15"
+    "node-telegram-bot-api": "^0.61.0"
   }
 }
