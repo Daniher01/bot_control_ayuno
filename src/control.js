@@ -6,16 +6,15 @@ const moment = require('moment');
 let control = {
     nombre : '',
     horas_ayuno: 0,
-    horas_comida : function(){
-        return 24 - control.horas_ayuno
-    },
+    horas_comida : 0,
     estado_control: "Comida",
     hora_inicio: 0
 }
 
-const activar = (horas_ayuno, usuario) => {
+const activar = (horas_ayuno, horas_comida, usuario) => {
     control.nombre = usuario;
     control.horas_ayuno = moment().add(horas_ayuno,'h').format('HH:mm');
+    control.horas_comida = moment(horas_ayuno, 'hhmm').add(horas_comida,'h').format('HH:mm');
 }
 
 const cancelar = () => {

@@ -126,18 +126,18 @@ setInterval(function(){
 }, 5000);
 
 function llevarControl(){
-    let hora_inicio = Control.control.horas_comida(); // primera vez que se inicia el bot
     if(chatID != null && global.esta_ayunando == true){
-        hora_inicio = Control.control.hora_inicio;
+        let hora_inicio = Control.control.hora_inicio;
         
         console.log(hora_inicio);
         console.log(Control.control.horas_ayuno);
-        console.log(Control.control.horas_comida());
+        console.log(Control.control.horas_comida);
+
+        console.log(moment(hora_inicio, 'HH:mm ').isSameOrAfter(moment(Control.control.horas_comida, 'HH:mm')));
        
         switch (Control.control.estado_control){
             case "Ayuno":
-                if(moment(hora_inicio, 'h').startOf('hour').fromNow() >= 
-                    moment(Control.control.horas_ayuno, 'h').startOf('hour').fromNow()){
+                if(moment(hora_inicio,'HH:mm ').isSameOrAfter(moment(Control.control.horas_ayuno, 'HH:mm'))){
 
                     Control.control.estado_control = "Comida"
                     bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
@@ -145,8 +145,7 @@ function llevarControl(){
                 
                 break;
             case "Comida":
-                if(moment(hora_inicio, 'h').startOf('hour').fromNow() >= 
-                        moment(Control.control.horas_comida(), 'h').startOf('hour').fromNow()){
+                if(moment(hora_inicio, 'HH:mm ').isSameOrAfter(moment(Control.control.horas_comida, 'HH:mm'))){
                     Control.control.estado_control = "Ayuno"
                     bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
