@@ -11,7 +11,7 @@ let control = {
     hora_inicio: 0
 }
 
-const activar = (horas_ayuno, horas_comida, usuario) => {
+const activar = (horas_ayuno, usuario) => {
     control.nombre = usuario;
     control.hora_inicio = moment().format("HH:mm");
     control.horas_ayuno = moment().add(horas_ayuno,'h').format('HH:mm');
@@ -40,5 +40,12 @@ const status = () =>{
     `;
 }
 
+const activar_test = (horas_ayuno, horas_comida, usuario) => {
+    control.nombre = usuario;
+    control.hora_inicio = moment().format("HH:mm");
+    control.horas_ayuno = moment().add(horas_ayuno,'h').format('HH:mm');
+    control.horas_comida = moment().add(horas_comida, 'h').format('HH:mm');
+}
 
-module.exports = {control, status, activar, cancelar};
+
+module.exports = {control, status, activar, cancelar, activar_test};

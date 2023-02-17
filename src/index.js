@@ -11,6 +11,7 @@ let chatID = null;
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
+const Formato = 'HH:mm'
 
 
 console.log('Se inicia el bot');
@@ -86,7 +87,8 @@ bot.onText(/^[0-9]$/, function(msg){
         if(global.esta_ayunando == false){
             let mensaje = Menu.elegirOpcion(msg.text, nameUser)
 
-            llevarControl()
+            const now = moment().format(Formato);
+            llevarControl(now, Formato)
 
             bot.sendMessage(chatId, mensaje);
         }else{
@@ -122,16 +124,22 @@ bot.onText(/^\/cancelar/, function(msg){
 
 // ? LOGICA DE LA APP
 setInterval(function(){
-    llevarControl();
+
+    const hora_actual = moment().format(Formato);
+    console.log('Hora actual: '+hora_actual);
+    llevarControl(hora_actual, Formato);
 }, 60000);
 
-function llevarControl(){
+function llevarControl(now, formato){
     console.log('function::llevarControl');
     if(chatID != null && global.esta_ayunando == true){
-        let hora_inicio = Control.control.hora_inicio;
+
+        console.log('Hora limite ayuno: '+Control.control.horas_ayuno);
+        console.log('Hora limite comida: '+Control.control.horas_comida);
+
         switch (Control.control.estado_control){
             case "Ayuno":
-                if(moment().isSame(moment(Control.control.horas_ayuno, 'HH:mm'))){
+                if(moment(now, formato).isSame(moment(Control.control.horas_ayuno, formato))){
 
                     Control.control.estado_control = "Comida"
                     bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
@@ -139,10 +147,10 @@ function llevarControl(){
                 
                 break;
             case "Comida":
-                if(moment().isSame(moment(Control.control.horas_comida, 'HH:mm'))){
+                if(moment(now, formato).isSame(moment(Control.control.horas_comida, formato))){
                     Control.control.estado_control = "Ayuno"
                     bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
-                }
+                } 
                 break;
         }
     }
