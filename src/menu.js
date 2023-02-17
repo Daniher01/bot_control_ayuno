@@ -59,6 +59,11 @@ const elegirOpcion = (opcion, usuario) =>{
            Control.activar(horas[parseInt(opcion)].ayuno,horas[parseInt(opcion)].comida, usuario)
            global.esta_ayunando = true
             break
+        case '63': 
+            msg = mensaje(horas[1].ayuno)
+            Control.activar(horas[1].comida, usuario)
+            global.esta_ayunando = true
+            break    
         case '0':
             msg = `No elegiste ninguna opcion, para poder elegir otra opcion, ejecute el comando "/start"`     
             global.puede_elegir = false       

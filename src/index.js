@@ -131,7 +131,7 @@ function llevarControl(){
         let hora_inicio = Control.control.hora_inicio;
         switch (Control.control.estado_control){
             case "Ayuno":
-                if(moment(hora_inicio,'HH:mm ').isSame(moment(Control.control.horas_ayuno, 'HH:mm'))){
+                if(moment().isSame(moment(Control.control.horas_ayuno, 'HH:mm'))){
 
                     Control.control.estado_control = "Comida"
                     bot.sendMessage(chatID, `*Ya puedes romper el ayuno* ✅`,{parse_mode : "Markdown"});
@@ -139,7 +139,7 @@ function llevarControl(){
                 
                 break;
             case "Comida":
-                if(moment(hora_inicio, 'HH:mm ').isSame(moment(Control.control.horas_comida, 'HH:mm'))){
+                if(moment().isSame(moment(Control.control.horas_comida, 'HH:mm'))){
                     Control.control.estado_control = "Ayuno"
                     bot.sendMessage(chatID, `*Entraste en Ayuno* ‼️`,{parse_mode : "Markdown"});
                 }
